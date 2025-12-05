@@ -6,6 +6,7 @@ use App\Models\Recipe;
 use App\Models\Comment;
 use App\Policies\RecipePolicy;
 use App\Policies\CommentPolicy;
+use Illuminate\Support\Facades\URL;
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
@@ -15,5 +16,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Gate::policy(Recipe::class, RecipePolicy::class);
         Gate::policy(Comment::class, CommentPolicy::class);
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
     }
 }
